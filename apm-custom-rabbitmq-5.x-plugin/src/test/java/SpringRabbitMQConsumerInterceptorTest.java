@@ -9,13 +9,18 @@ import org.apache.skywalking.apm.agent.core.context.ContextManager;
 import org.apache.skywalking.apm.agent.core.plugin.interceptor.enhance.EnhancedInstance;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
+import org.springframework.amqp.core.ReturnedMessage;
+import org.springframework.amqp.rabbit.connection.CorrelationData;
+
+import java.lang.reflect.Method;
 
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SpringRabbitMQConsumerInterceptorTest {
 
-    private SpringRabbitMQConsumerInterceptor interceptor;
+    private SpringRabbitMQCallbackInterceptor interceptor;
+//    private SpringRabbitMQConsumerInterceptor interceptor;
 
     @Mock
     private EnhancedInstance enhancedInstance;
@@ -24,11 +29,20 @@ public class SpringRabbitMQConsumerInterceptorTest {
     private Message message;
 
     @Mock
+    private Method method;
+
+    @Mock
+    private CorrelationData correlationData;
+    @Mock
+    private ReturnedMessage returnedMessage;
+
+    @Mock
     private MessageProperties messageProperties;
 
     @Before
     public void setUp() {
-        interceptor = new SpringRabbitMQConsumerInterceptor();
+//        interceptor = new SpringRabbitMQConsumerInterceptor();
+        interceptor = new SpringRabbitMQCallbackInterceptor();
         when(message.getMessageProperties()).thenReturn(messageProperties);
     }
 
@@ -37,9 +51,13 @@ public class SpringRabbitMQConsumerInterceptorTest {
         // 设置测试数据
         when(messageProperties.getReceivedExchange()).thenReturn("testExchange");
         when(messageProperties.getReceivedRoutingKey()).thenReturn("testRoutingKey");
+        when(method.getName()).thenReturn("confirm");
+        when(returnedMessage.getMessage()).thenReturn(message);
+        when(correlationData.getReturned()).thenReturn(returnedMessage);
+
 
         // 执行方法
-        interceptor.beforeMethod(enhancedInstance, null, new Object[]{null, message}, null, null);
+        interceptor.beforeMethod(enhancedInstance, method, new Object[]{new CorrelationData("123")}, null, null);
 
         // 验证结果
         verify(messageProperties).getReceivedExchange();

@@ -17,6 +17,7 @@
 spring-rabbitmq-5.x=org.apm.plugin.spring.rabbitmq.define.SpringRabbitMQConsumerInstrumentation
 #spring-rabbitmq-producer=org.apm.plugin.spring.rabbitmq.define.SpringRabbitMQProducerInstrumentation
 spring-rabbitmq-callback=org.apm.plugin.spring.rabbitmq.define.SpringRabbitMQCallbackInstrumentation
+#spring-rabbitmq-send=org.apm.plugin.spring.rabbitmq.define.RabbitMQInstrumentation
 #spring-rabbitmq-producer=org.apm.plugin.spring.rabbitmq.define.RabbitMQInstrumentation
 
 #官方实现

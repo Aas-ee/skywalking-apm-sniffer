@@ -12,7 +12,7 @@ import static net.bytebuddy.matcher.ElementMatchers.named;
 
 public class RabbitMQInstrumentation extends ClassInstanceMethodsEnhancePluginDefine {
     private static final String ENHANCE_CLASS = "org.springframework.amqp.rabbit.core.RabbitTemplate";
-    private static final String SEND_INTERCEPT_CLASS = "org.apm.plugin.spring.rabbitmq.RabbitTemplateSendInterceptor";
+    private static final String SEND_INTERCEPT_CLASS = "org.apm.plugin.spring.rabbitmq.RabbitTemplateInterceptor";
 
     @Override
     protected ClassMatch enhanceClass() {
@@ -30,7 +30,7 @@ public class RabbitMQInstrumentation extends ClassInstanceMethodsEnhancePluginDe
             new InstanceMethodsInterceptPoint() {
                 @Override
                 public ElementMatcher<MethodDescription> getMethodsMatcher() {
-                    return named("send").or(named("convertAndSend"));
+                    return named("send");
                 }
 
                 @Override
