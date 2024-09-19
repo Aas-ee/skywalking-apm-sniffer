@@ -59,7 +59,7 @@ public class SpringRabbitMQConsumerInstrumentation extends ClassInstanceMethodsE
                 new DeclaredInstanceMethodsInterceptPoint() {
                     @Override
                     public ElementMatcher<MethodDescription> getMethodsMatcher() {
-                        // 这里是要拦截的方法
+                        // 这里是要拦截的方法同时限定被拦截的方法的参数类型
                         return named("executeListener").and(takesArgumentWithType(0, "com.rabbitmq.client.Channel"));
                     }
 
